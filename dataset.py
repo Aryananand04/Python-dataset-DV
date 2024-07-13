@@ -16,3 +16,13 @@ print("Columns of data1:")
 print(data1.columns)
 print("\nColumns of data2:")
 print(data2.columns)
+
+
+# Merge datasets on common columns
+merged_data = pd.merge(data1, data2, on=['Region', 'Date', 'Frequency', 'Estimated Unemployment Rate (%)', 'Estimated Employed', 'Estimated Labour Participation Rate (%)'], how='outer')
+
+# Display the first few rows of the merged dataset to verify
+print(merged_data.head())
+
+# Save the merged dataset to a new CSV file
+merged_data.to_csv('/Users/aryananand/Desktop/archive/Merged_Unemployment_Data.csv', index=False)
