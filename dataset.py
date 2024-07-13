@@ -9,13 +9,28 @@ data2 = pd.read_csv('/Users/aryananand/Desktop/archive/Unemployment_Rate_upto_11
 data1.columns = data1.columns.str.strip()
 data2.columns = data2.columns.str.strip()
 
+# Check the unique values in the 'Date' columns to identify any problematic formats
+print("Unique Dates in data1:")
+print(data1['Date'].unique())
+print("\nUnique Dates in data2:")
+print(data2['Date'].unique())
+
 # Convert 'Date' to datetime for easier manipulation, with error handling
 data1['Date'] = pd.to_datetime(data1['Date'], format='%d-%m-%Y', errors='coerce')
 data2['Date'] = pd.to_datetime(data2['Date'], format='%d-%m-%Y', errors='coerce')
 
-# Check for any rows where the conversion failed
-print(data1[data1['Date'].isna()])
-print(data2[data2['Date'].isna()])
+# Identify rows where 'Date' conversion failed
+data1_invalid_dates = data1[data1['Date'].isna()]
+data2_invalid_dates = data2[data2['Date'].isna()]
+
+print("\nInvalid Dates in data1:")
+print(data1_invalid_dates)
+print("\nInvalid Dates in data2:")
+print(data2_invalid_dates)
+
+# Remove rows with invalid 'Date' values
+data1 = data1.dropna(subset=['Date'])
+data2 = data2.dropna(subset=['Date'])
 
 # Merge datasets on common columns
 merged_data = pd.merge(data1, data2, on=['Region', 'Date', 'Frequency', 'Estimated Unemployment Rate (%)', 'Estimated Employed', 'Estimated Labour Participation Rate (%)'], how='outer')
